@@ -1,5 +1,5 @@
 <template lang="html">
-  <v-flex xs2 class="text-xs-center">
+  <v-flex id="logo_div" xs2 class="text-xs-center">
     <img id="logo" src="../assets/logo.png" alt="">
   </v-flex>
 
@@ -11,8 +11,13 @@ export default {
 </script>
 
 <style lang="css" scoped>
+
+#logo_div {
+  width: 100px;
+}
+
 #logo {
-  max-height: 100%;
-  max-width: 100%;
+  width: 100px;
+  height: 100%;
 }
 </style>
