@@ -1,13 +1,19 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import web3 from './web3'
+// jshint esversion: 8
 
-Vue.use(Vuex)
+import Vue from "vue";
+import Vuex from "vuex";
+import web3 from "./web3";
+import peerjs from "./peerjs";
+
+Vue.use(Vuex);
 
 const store = new Vuex.Store({
   modules: {
-    web3
+    web3,
+    peerjs
   }
-})
+});
 
-export default store
+store.dispatch('peerjs/init')
+
+export default store;

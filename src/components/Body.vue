@@ -1,6 +1,6 @@
 <template lang="html">
   <v-layout wrap id="body">
-    me
+    gotta add a messenging component here
   </v-layout>
 </template>
 
