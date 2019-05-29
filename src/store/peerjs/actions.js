@@ -1,10 +1,11 @@
 // jshint esversion:8
 
-import { initialise } from "./peerjsConnect";
+import { s_initialise, r_initialise } from "./peerjsConnect";
 
 export default {
-  init(context) {
-    initialise();
+  s_init(context) {
+    s_initialise(context);
+    r_initialise(context);
   }
   // connect(context) {
   //   connectProvider(context)

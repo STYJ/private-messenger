@@ -1,6 +1,11 @@
 <template lang="html">
   <v-layout wrap id="body">
-    gotta add a messenging component here
+    <v-flex>
+      sender
+    </v-flex>
+    <v-flex>
+      receiver
+    </v-flex>
   </v-layout>
 </template>
 
