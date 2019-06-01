@@ -1,88 +1,87 @@
 <template lang="html">
   <v-layout wrap id="body">
-    <v-flex>
+    <v-flex xs6>
       <h3>Sender</h3>
-      <v-btn small v-on:click='s_init'>Initialise Sender</v-btn>
-      <v-flex xs9>
-        <v-textarea
-          solo
-          autofocus
-          placeholder="type message here"
-        ></v-textarea>
-        <v-btn small v-on:click='print_console()'>console me!</v-btn>
-      </v-flex>
-      <!-- <v-layout>
-        <v-flex xs12 sm8 md4>
-          <v-card>
-            <v-toolbar dark color="primary darken-1">
-              <v-toolbar-title>PM with XYZ</v-toolbar-title>
-            </v-toolbar>
-            <v-card-text>
-              <v-list ref="chat" id="logs">
-                <template v-for="(item, index) in logs">
-                  <v-subheader v-if="item" :key="index">{{ item }}</v-subheader>
-                </template>
-              </v-list>
-            </v-card-text>
-            <v-card-actions>
-              <v-form @submit.prevent="submit">
-                <v-text-field v-model="msg" label="Message" single-line solo-inverted></v-text-field>
-                <v-btn fab dark small color="primary" type="submit">
-                  <v-icon dark>send</v-icon>
-                </v-btn>
-              </v-form>
-            </v-card-actions>
-          </v-card>
-        </v-flex>
-      </v-layout> -->
+      <v-btn small v-on:click="s_init">Initialise Sender</v-btn>
+      <v-list ref="chat" id="logs">
+        <template v-for="(log, index) in logs">
+          <!-- subheader looks nicer but like limited control. -->
+          <v-subheader v-if="log" v-bind:key="index">
+            {{ log }}
+          </v-subheader>
+          <!-- <v-list-tile v-bind:key="index">
+            <v-list-tile-content>
+              <v-list-tile-title>{{ log }}</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile> -->
+        </template>
+      </v-list>
+
+      <v-form v-on:submit.prevent="submit">
+        <v-layout>
+          <v-flex xs11>
+            <v-text-field
+              full-width
+              placeholder="Type something here..."
+              v-model="new_message"
+            />
+          </v-flex>
+          <v-flex align-self-center>
+            <v-btn fab flat small color="primary" type="submit">
+              <v-icon>send</v-icon>
+            </v-btn>
+          </v-flex>
+        </v-layout>
+      </v-form>
 
     </v-flex>
 
-    <v-flex>
+    <v-flex xs6>
       <h3>Receiver</h3>
-      <v-btn small v-on:click='r_init'>Initialise Receiver</v-btn>
+      <v-btn small v-on:click="r_init">Initialise Receiver</v-btn>
 
     </v-flex>
   </v-layout>
 </template>
-
-
 <style lang="css" scoped>
 #body {
   background-color: lightblue
 }
-</style>
 
+#logs {
+  height:100px;
+  overflow: auto;
+}
+
+</style>
 <script>
 export default {
   data() {
     return {
-      message: "Hello",
-      // logs: [],
-      // msg: null
+      new_message: "",
+      logs: ["older message #1", "this is newer and very very very very very very very very very very  extremely long message #2"]
     };
   },
   methods: {
-    // submit() {
-    //   this.logs.push(this.msg);
-    //   this.msg = "";
-    // },
-    print_console(msg) {
-      console.log(msg);
+    submit() {
+      if (this.new_message.length > 0) {
+        this.logs.push(this.new_message)
+        this.new_message = "";
+      }
     },
     s_init() {
       this.$store.dispatch("peerjs/s_init");
     },
     r_init() {
       this.$store.dispatch("peerjs/j_init");
-    },
+    }
   },
-  // watch: {
-  //   logs() {
-  //     setTimeout(() => {
-  //       this.$refs.chat.$el.scrollTop = this.$refs.chat.$el.scrollHeight;
-  //     }, 0);
-  //   }
-  // }
+  watch: {
+    logs() {
+      setTimeout(() => {
+        this.$refs.chat.$el.scrollTop = this.$refs.chat.$el.scrollHeight;
+      }, 0);
+    }
+  }
 };
 </script>

@@ -3,10 +3,10 @@
     <v-flex shrink id='network'>
       <v-btn flat disabled small>{{ network }}</v-btn>
     </v-flex>
-    <v-flex v-if='address != "Null"' shrink id='address'>
+    <v-flex v-if='address != null' shrink id='address'>
       <v-btn flat disabled small>{{ address }}</v-btn>
     </v-flex>
-    <v-flex v-if='address == "Null"' shrink id='connect'>
+    <v-flex v-if='address == null' shrink id='connect'>
       <v-btn small v-on:click='connect'>Connect Metamask</v-btn>
     </v-flex>
   </v-layout>
