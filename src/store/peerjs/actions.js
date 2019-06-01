@@ -5,8 +5,11 @@ import { s_initialise, r_initialise } from "./peerjsConnect";
 export default {
   s_init(context) {
     s_initialise(context);
+  },
+  j_init(context) {
     r_initialise(context);
   }
+
   // connect(context) {
   //   connectProvider(context)
   //     .then(payload => {

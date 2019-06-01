@@ -14,6 +14,4 @@ const store = new Vuex.Store({
   }
 });
 
-store.dispatch('peerjs/s_init')
-
 export default store;
