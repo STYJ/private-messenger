@@ -3,17 +3,38 @@
     <v-flex xs6>
       <h3>Sender</h3>
       <v-btn small v-on:click="s_init">Initialise Sender</v-btn>
-      <v-list ref="chat" id="logs">
+      <v-form v-on:submit.prevent="s_connect(receiver_id)">
+        <v-layout>
+          <v-flex shrink>
+            <v-btn fab flat small color="primary" type="submit">
+              Connect
+            </v-btn>
+          </v-flex>
+
+          <!-- <v-flex>
+            <v-text-field
+              solo
+              full-width
+              placeholder="Enter receiver ID."
+              v-model="receiver_id"
+            />
+          </v-flex> -->
+
+        </v-layout>
+      </v-form>
+
+
+
+      <!-- <v-list ref="chat" id="logs">
         <template v-for="(log, index) in logs">
-          <!-- subheader looks nicer but like limited control. -->
           <v-subheader v-if="log" v-bind:key="index">
             {{ log }}
           </v-subheader>
-          <!-- <v-list-tile v-bind:key="index">
+          <v-list-tile v-bind:key="index">
             <v-list-tile-content>
               <v-list-tile-title>{{ log }}</v-list-tile-title>
             </v-list-tile-content>
-          </v-list-tile> -->
+          </v-list-tile>
         </template>
       </v-list>
 
@@ -32,7 +53,7 @@
             </v-btn>
           </v-flex>
         </v-layout>
-      </v-form>
+      </v-form> -->
 
     </v-flex>
 
@@ -49,7 +70,7 @@
 }
 
 #logs {
-  height:100px;
+  height:112px;
   overflow: auto;
 }
 
@@ -58,6 +79,7 @@
 export default {
   data() {
     return {
+      receiver_id: "",
       new_message: "",
       logs: ["older message #1", "this is newer and very very very very very very very very very very  extremely long message #2"]
     };
@@ -71,6 +93,9 @@ export default {
     },
     s_init() {
       this.$store.dispatch("peerjs/s_init");
+    },
+    s_connect(receiver_id) {
+      this.$store.dispatch("peerjs/s_connect", {receiver_id: receiver_id});
     },
     r_init() {
       this.$store.dispatch("peerjs/j_init");
