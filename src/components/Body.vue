@@ -4,45 +4,35 @@
       <h3>Sender</h3>
       <v-btn small v-on:click="s_init">Initialise Sender</v-btn>
       <v-form v-on:submit.prevent="s_connect(receiver_id)">
-        <v-layout>
+        <v-layout align-center justify-space-around>
           <v-flex shrink>
             <v-btn fab flat small color="primary" type="submit">
               Connect
             </v-btn>
           </v-flex>
-
-          <!-- <v-flex>
+          <v-flex shrink xs8>
             <v-text-field
-              solo
-              full-width
               placeholder="Enter receiver ID."
               v-model="receiver_id"
             />
-          </v-flex> -->
-
+          </v-flex>
         </v-layout>
       </v-form>
 
 
 
-      <!-- <v-list ref="chat" id="logs">
+      <v-list ref="chat" id="logs">
         <template v-for="(log, index) in logs">
           <v-subheader v-if="log" v-bind:key="index">
             {{ log }}
           </v-subheader>
-          <v-list-tile v-bind:key="index">
-            <v-list-tile-content>
-              <v-list-tile-title>{{ log }}</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
         </template>
       </v-list>
 
-      <v-form v-on:submit.prevent="submit">
+      <v-form v-on:submit.prevent="s_submit">
         <v-layout>
           <v-flex xs11>
             <v-text-field
-              full-width
               placeholder="Type something here..."
               v-model="new_message"
             />
@@ -53,7 +43,7 @@
             </v-btn>
           </v-flex>
         </v-layout>
-      </v-form> -->
+      </v-form>
 
     </v-flex>
 
@@ -61,6 +51,21 @@
       <h3>Receiver</h3>
       <v-btn small v-on:click="r_init">Initialise Receiver</v-btn>
 
+      <v-form v-on:submit.prevent="r_submit">
+        <v-layout>
+          <v-flex xs11>
+            <v-text-field
+              placeholder="Type something here..."
+              v-model="new_message"
+            />
+          </v-flex>
+          <v-flex align-self-center>
+            <v-btn fab flat small color="primary" type="submit">
+              <v-icon>send</v-icon>
+            </v-btn>
+          </v-flex>
+        </v-layout>
+      </v-form>
     </v-flex>
   </v-layout>
 </template>
@@ -70,7 +75,7 @@
 }
 
 #logs {
-  height:112px;
+  height:110px;
   overflow: auto;
 }
 
@@ -85,9 +90,17 @@ export default {
     };
   },
   methods: {
-    submit() {
+    s_submit() {
       if (this.new_message.length > 0) {
-        this.logs.push(this.new_message)
+        let peer = this.$store.getters["peerjs/s_peer"].id
+        this.logs.push(`${peer} ${this.new_message}`)
+        this.new_message = "";
+      }
+    },
+    r_submit() {
+      if (this.new_message.length > 0) {
+        let peer = this.$store.getters["peerjs/r_peer"].id
+        this.logs.push(`${peer} ${this.new_message}`)
         this.new_message = "";
       }
     },

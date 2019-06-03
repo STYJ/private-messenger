@@ -4,7 +4,6 @@ import Peer from "peerjs";
 export function s_initialise(context) {
   var lastPeerId = context.getters.s_lastPeerId;
   var peer = context.getters.s_peer; // Own peer object
-  var peerId = null;
   var conn = context.getters.s_conn;
 
   peer = new Peer(null, {
@@ -43,7 +42,7 @@ export function s_initialise(context) {
 }
 
 export function s_connect(context, payload) {
-  console.log(payload);
+  console.log(payload, " inside s_connect");
   let peer = context.getters.s_peer;
   console.log("Peer is ", peer);
   let conn = context.getters.s_conn;
