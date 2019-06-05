@@ -6,7 +6,6 @@
   </v-layout>
 </template>
 
-
 <style lang="css" scoped>
 #header {
   background-color: yellow

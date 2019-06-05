@@ -3,39 +3,42 @@ import Peer from "peerjs";
 
 export function s_initialise(context) {
   var lastPeerId = context.getters.s_lastPeerId;
-  var peer = context.getters.s_peer; // Own peer object
+  var peer = context.getters.s_peer;
   var conn = context.getters.s_conn;
 
+  // Create new peer
   peer = new Peer(null, {
     debug: 2
   });
 
-  peer.on('open', function(id) {
+  // Setting up peer
+  peer.on("open", function(id) {
+    // "open" event is emitted when connection to PeerServer is established.
     // Workaround for peer.reconnect deleting previous id
     if (peer.id === null) {
-      console.log('Received null id from peer open');
+      console.log("Received null id from peer open");
       peer.id = lastPeerId;
       context.commit("s_setPeer", peer);
     } else {
       lastPeerId = peer.id;
       context.commit("s_setLastPeerId", lastPeerId);
     }
-    console.log('Sender_ID: ' + peer.id);
+    console.log("Sender_ID: " + peer.id);
   });
-  peer.on('disconnected', function() {
-    console.log('Connection lost. Please reconnect');
+  peer.on("disconnected", function() {
+    console.log("Connection lost. Please reconnect");
     // Workaround for peer.reconnect deleting previous id
     peer.id = lastPeerId;
     peer._lastServerId = lastPeerId;
     context.commit("s_setPeer", peer);
     peer.reconnect();
   });
-  peer.on('close', function() {
+  peer.on("close", function() {
     conn = null;
     context.commit("s_setConn", conn);
-    console.log('Connection destroyed');
+    console.log("Connection destroyed");
   });
-  peer.on('error', function(err) {
+  peer.on("error", function(err) {
     console.log(err);
   });
   context.commit("s_setPeer", peer);
@@ -53,7 +56,7 @@ export function s_connect(context, payload) {
   conn = peer.connect(payload.receiver_id, {
     reliable: true
   });
-  conn.on('open', function() {
+  conn.on("open", function() {
     console.log(`Sender connected to Receiver ${conn.peer}`);
     // // Check URL params for comamnds that should be sent immediately
     // var command = getUrlParam("command");
@@ -61,12 +64,14 @@ export function s_connect(context, payload) {
     //   conn.send(command);
   });
   // Handle incoming data (messages only since this is the signal sender)
-  conn.on('data', function(data) {
+  conn.on("data", function(data) {
     addMessage("Sender", data);
   });
-  conn.on('close', function() {
-    console.log("Sender's Connection with Receiver is closed")
+  conn.on("close", function() {
+    console.log("Sender's Connection with Receiver is closed");
   });
+  context.commit("s_setConn", conn);
+
 }
 
 export function r_initialise(context) {
@@ -103,18 +108,19 @@ export function r_initialise(context) {
       });
       return;
     }
+    // Else set up connection
     conn = c;
-    context.commit("r_setConn", conn);
     console.log(`Receiver connected to Sender ${conn.peer}`);
 
     conn.on("data", function(data) {
-      addMessage("Sender", data);
+      addMessage("Receiver", data);
     });
     conn.on("close", function() {
       conn = null;
       context.commit("r_setConn", conn);
       console.log("connection closed");
     });
+    context.commit("r_setConn", conn);
   });
   peer.on("disconnected", function() {
     console.log("Connection lost. Please reconnect");

@@ -19,8 +19,6 @@
         </v-layout>
       </v-form>
 
-
-
       <v-list ref="chat" id="logs">
         <template v-for="(log, index) in logs">
           <v-subheader v-if="log" v-bind:key="index">
@@ -44,7 +42,6 @@
           </v-flex>
         </v-layout>
       </v-form>
-
     </v-flex>
 
     <v-flex xs6>
@@ -78,7 +75,6 @@
   height:110px;
   overflow: auto;
 }
-
 </style>
 <script>
 export default {
@@ -86,21 +82,26 @@ export default {
     return {
       receiver_id: "",
       new_message: "",
-      logs: ["older message #1", "this is newer and very very very very very very very very very very  extremely long message #2"]
+      logs: [
+        "older message #1",
+        "this is newer and very very very very very very very very very very  extremely long message #2"
+      ]
     };
   },
   methods: {
     s_submit() {
       if (this.new_message.length > 0) {
-        let peer = this.$store.getters["peerjs/s_peer"].id
-        this.logs.push(`${peer} ${this.new_message}`)
+        let peer = this.$store.getters["peerjs/s_peer"];
+        peer !== null ? peer = peer.id : peer = "Sender undefined"
+        this.logs.push(`${peer}: ${this.new_message}`);
         this.new_message = "";
       }
     },
     r_submit() {
       if (this.new_message.length > 0) {
-        let peer = this.$store.getters["peerjs/r_peer"].id
-        this.logs.push(`${peer} ${this.new_message}`)
+        let peer = this.$store.getters["peerjs/r_peer"];
+        peer !== null ? peer = peer.id : peer = "Receiver undefined"
+        this.logs.push(`${peer}: ${this.new_message}`);
         this.new_message = "";
       }
     },
@@ -108,7 +109,7 @@ export default {
       this.$store.dispatch("peerjs/s_init");
     },
     s_connect(receiver_id) {
-      this.$store.dispatch("peerjs/s_connect", {receiver_id: receiver_id});
+      this.$store.dispatch("peerjs/s_connect", { receiver_id: receiver_id });
     },
     r_init() {
       this.$store.dispatch("peerjs/j_init");
