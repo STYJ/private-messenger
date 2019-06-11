@@ -92,7 +92,7 @@ export default {
     s_submit() {
       if (this.new_message.length > 0) {
         let peer = this.$store.getters["peerjs/s_peer"];
-        peer !== null ? peer = peer.id : peer = "Sender undefined"
+        peer !== null ? (peer = peer.id) : (peer = "Sender undefined");
         this.logs.push(`${peer}: ${this.new_message}`);
         this.new_message = "";
       }
@@ -100,7 +100,7 @@ export default {
     r_submit() {
       if (this.new_message.length > 0) {
         let peer = this.$store.getters["peerjs/r_peer"];
-        peer !== null ? peer = peer.id : peer = "Receiver undefined"
+        peer !== null ? (peer = peer.id) : (peer = "Receiver undefined");
         this.logs.push(`${peer}: ${this.new_message}`);
         this.new_message = "";
       }

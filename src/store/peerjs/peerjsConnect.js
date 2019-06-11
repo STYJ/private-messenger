@@ -13,7 +13,6 @@ export function s_initialise(context) {
 
   // Setting up peer
   peer.on("open", function(id) {
-    // "open" event is emitted when connection to PeerServer is established.
     // Workaround for peer.reconnect deleting previous id
     if (peer.id === null) {
       console.log("Received null id from peer open");
@@ -36,7 +35,7 @@ export function s_initialise(context) {
   peer.on("close", function() {
     conn = null;
     context.commit("s_setConn", conn);
-    console.log("Connection destroyed");
+    console.log("Connection destroyed, please refresh.");
   });
   peer.on("error", function(err) {
     console.log(err);
@@ -45,10 +44,9 @@ export function s_initialise(context) {
 }
 
 export function s_connect(context, payload) {
-  console.log(payload, " inside s_connect");
   let peer = context.getters.s_peer;
-  console.log("Peer is ", peer);
   let conn = context.getters.s_conn;
+  // Close old connections if any i.e. only 1 connection.
   if (conn) {
     conn.close();
   }
@@ -71,7 +69,6 @@ export function s_connect(context, payload) {
     console.log("Sender's Connection with Receiver is closed");
   });
   context.commit("s_setConn", conn);
-
 }
 
 export function r_initialise(context) {
@@ -98,7 +95,7 @@ export function r_initialise(context) {
     console.log("Awaiting connection...");
   });
   peer.on("connection", function(c) {
-    // Allow only a single connection
+    // Allow only a single connection, can easily remove to enable more than 1 connection.
     if (conn) {
       c.on("open", function() {
         c.send("Already connected to another client");
