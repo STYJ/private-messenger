@@ -1,19 +1,16 @@
 // jshint esversion:8
 
-import { init, connect } from "./peerjsConnect";
+import { s_initialise, s_connect, r_initialise } from "./peerjsConnect";
 
 export default {
-  init(context) {
-    init(context);
+  s_init(context) {
+    s_initialise(context);
   },
-  connect(context, receiver_id) {
-    connect(
-      context,
-      receiver_id
-    );
+  s_connect(context, payload) {
+    s_connect(context, payload);
   },
-  setLogs(context, logs) {
-    context.commit("setLogs", logs);
+  j_init(context) {
+    r_initialise(context);
   }
 
   // connect(context) {
@@ -41,7 +38,7 @@ export default {
   //     }
   //   });
   //   if (ready()) await ctx.dispatch('connect');
-  //   event.$emit(EVENT_CHANNEL,MSGS.ETHERVUEX_INITIALIZED);
+  //   event.$emit(EVENT_CHANNEL,MSGS.ETHERS_VUEX_INITIALIZED);
   //   console.log('Log in to your Ethereum wallet to see what it can do!');
   //   ctx.commit('initialized', true);
   // }

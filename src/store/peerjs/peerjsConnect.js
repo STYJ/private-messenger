@@ -1,149 +1,97 @@
 // jshint esversion:8
 import Peer from "peerjs";
 
-export function s_initialise(context) {
-  var lastPeerId = context.getters.s_lastPeerId;
-  var peer = context.getters.s_peer;
-  var conn = context.getters.s_conn;
-
+export function init(context) {
   // Create new peer
-  peer = new Peer(null, {
+  // https://peerjs.com/docs.html#peer-id
+  let peer = new Peer(null, {
     debug: 2
   });
 
   // Setting up peer
+  // https://peerjs.com/docs.html#peeron
   peer.on("open", function(id) {
     // Workaround for peer.reconnect deleting previous id
-    if (peer.id === null) {
-      console.log("Received null id from peer open");
-      peer.id = lastPeerId;
-      context.commit("s_setPeer", peer);
-    } else {
-      lastPeerId = peer.id;
-      context.commit("s_setLastPeerId", lastPeerId);
-    }
-    console.log("Sender_ID: " + peer.id);
+    // if (peer.id === null) {
+    //   console.log("Received null id from peer open");
+    //   peer.id = lastPeerId;
+    //   context.commit("setPeer", peer);
+    // } else {
+    //   lastPeerId = peer.id;
+    //   context.commit("setLastPeerId", lastPeerId);
+    // }
+    console.log(`Peer initiated: ${id}`);
   });
-  peer.on("disconnected", function() {
-    console.log("Connection lost. Please reconnect");
-    // Workaround for peer.reconnect deleting previous id
-    peer.id = lastPeerId;
-    peer._lastServerId = lastPeerId;
-    context.commit("s_setPeer", peer);
-    peer.reconnect();
+  peer.on("connection", function(conn) {
+    // Help Receiver to set up connection with Sender
+    setupConnection(context, conn);
+  });
+  peer.on("call", function(mediaConnection) {
+    console.log(`I haven't figured out how to handle calls ${mediaConnection}`);
   });
   peer.on("close", function() {
-    conn = null;
-    context.commit("s_setConn", conn);
-    console.log("Connection destroyed, please refresh.");
+    peer.destroy();
+    console.log(`Peer ${peer.id} closed and destroyed.`);
+  });
+  peer.on("disconnected", function() {
+    // Workaround for peer.reconnect deleting previous id
+    // peer.id = lastPeerId;
+    // peer._lastServerId = lastPeerId;
+    // context.commit("setPeer", peer);
+    console.log("Connection lost. Please reconnect");
+    // peer.reconnect();
   });
   peer.on("error", function(err) {
+    // https://peerjs.com/docs.html#peeron-error
     console.log(err);
   });
-  context.commit("s_setPeer", peer);
+  context.commit("setPeer", peer);
 }
 
-export function s_connect(context, payload) {
-  let peer = context.getters.s_peer;
-  let conn = context.getters.s_conn;
+export function connect(context, receiver_id) {
+  let peer = context.getters.peer;
+  // let conn = context.getters.conn;
   // Close old connections if any i.e. only 1 connection.
-  if (conn) {
-    conn.close();
-  }
-  // Create connection to destination peer specified in the input field
-  conn = peer.connect(payload.receiver_id, {
-    reliable: true
+  // if (conn) {
+  //   conn.close();
+  // }
+  console.log(`${peer.id} initiated connection to ${receiver_id}`);
+  // https://peerjs.com/docs.html#dataconnection
+  let conn = peer.connect(receiver_id, {
+    // reliable: false
+    // metadata: "Use this to identify the peer."
   });
-  conn.on("open", function() {
-    console.log(`Sender connected to Receiver ${conn.peer}`);
-    // // Check URL params for comamnds that should be sent immediately
-    // var command = getUrlParam("command");
-    // if (command)
-    //   conn.send(command);
-  });
-  // Handle incoming data (messages only since this is the signal sender)
-  conn.on("data", function(data) {
-    addMessage("Sender", data);
-  });
-  conn.on("close", function() {
-    console.log("Sender's Connection with Receiver is closed");
-  });
-  context.commit("s_setConn", conn);
+  // Sender needs to do this as well so that he can receive messages from receiver.
+  setupConnection(context, conn);
+
+  // Set peer in vuex to latest peer with newest connection
+  context.commit("setPeer", peer);
 }
 
-export function r_initialise(context) {
-  var lastPeerId = context.getters.r_lastPeerId;
-  var peer = context.getters.r_peer; // Own peer object
-  var peerId = null;
-  var conn = context.getters.r_conn;
-
-  peer = new Peer(null, {
-    debug: 2
+function setupConnection(context, conn) {
+  // Get current peer logs, push new message into logs and update logs
+  conn.on("data", function(data) {
+    let logs = context.getters.logs;
+    let receiver_id = conn.peer;
+    logs.push(`${receiver_id}: ${data}`);
+    context.commit("setLogs", logs);
   });
-
-  peer.on("open", function(id) {
-    // Workaround for peer.reconnect deleting previous id
-    if (peer.id === null) {
-      console.log("Received null id from peer open");
-      peer.id = lastPeerId;
-      context.commit("r_setPeer", peer);
-    } else {
-      lastPeerId = peer.id;
-      context.commit("r_setLastPeerId", lastPeerId);
-    }
-    console.log("Receiver_ID: " + peer.id);
-    console.log("Awaiting connection...");
+  // Todo: Create empty logs for this new connection
+  conn.on("open", function() {
+    console.log(`Connection established to peer: ${conn.peer}`);
   });
-  peer.on("connection", function(c) {
-    // Allow only a single connection, can easily remove to enable more than 1 connection.
-    if (conn) {
-      c.on("open", function() {
-        c.send("Already connected to another client");
-        setTimeout(function() {
-          c.close();
-        }, 500);
-      });
-      return;
-    }
-    // Else set up connection
-    conn = c;
-    console.log(`Receiver connected to Sender ${conn.peer}`);
-
-    conn.on("data", function(data) {
-      addMessage("Receiver", data);
-    });
-    conn.on("close", function() {
-      conn = null;
-      context.commit("r_setConn", conn);
-      console.log("connection closed");
-    });
-    context.commit("r_setConn", conn);
+  // Firefox does not support this yet
+  // Use the connection.close() function to close it
+  // Todo: Clear logs when connection is closed.
+  conn.on("close", function() {
+    console.log(`Connection with ${conn.peer} has been closed.`);
   });
-  peer.on("disconnected", function() {
-    console.log("Connection lost. Please reconnect");
-    // Workaround for peer.reconnect deleting previous id
-    peer.id = lastPeerId;
-    peer._lastServerId = lastPeerId;
-    context.commit("r_setPeer", peer);
-    peer.reconnect();
-  });
-  peer.on("close", function() {
-    conn = null;
-    context.commit("r_setConn", conn);
-    console.log("Connection destroyed");
-  });
-  peer.on("error", function(err) {
+  conn.on("error", function(err) {
     console.log(err);
   });
-  context.commit("r_setPeer", peer);
-}
-
-function addMessage(peer, message) {
-  console.log(`${peer}: ${message}`);
 }
 
 export default {
-  s_initialise,
-  s_connect,
-  r_initialise
+  init,
+  connect
 };
