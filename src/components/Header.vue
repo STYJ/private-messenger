@@ -1,6 +1,7 @@
 <template lang="html">
   <v-layout shrink id="header">
     <Logo />
+    <v-spacer />
     <ConnectMetamask />
   </v-layout>
 </template>

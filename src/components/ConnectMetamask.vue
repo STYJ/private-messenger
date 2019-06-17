@@ -1,5 +1,5 @@
 <template>
-  <v-layout align-center justify-end wrap id="connect-metamask">
+  <v-layout shrink align-center wrap id="connect-metamask">
     <NetworkStatus />
     <Address />
     <ConnectButton />

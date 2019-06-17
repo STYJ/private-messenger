@@ -5,6 +5,7 @@
       <v-form v-on:submit.prevent="connect(receiver_id)">
         <v-layout align-center justify-space-around>
           <v-flex shrink>
+            <!-- Todo: Connect automatically happens when you search for someone and try to message them. -->
             <v-btn fab flat small color="primary" type="submit">
               Connect
             </v-btn>
@@ -17,6 +18,7 @@
           </v-flex>
         </v-layout>
       </v-form>
+      <!-- Todo: Change to a clickable list where you can change between logs -->
       <h1>Lists of connections</h1>
       {{ connections }}
     </v-flex>
