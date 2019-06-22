@@ -1,17 +1,24 @@
 <template lang="html">
   <v-flex sm8 id="chat">
-    <ChatLog v-bind:logs="logs" />
+    <ChatHeader
+      v-bind:receiver_id="receiver_id"
+    />
+    <ChatLog
+      v-bind:logs="logs[receiver_id]"
+    />
     <ChatAction v-on:submit="submit" />
   </v-flex>
 </template>
 
 <script>
+import ChatHeader from "@/components/ChatHeader.vue";
 import ChatLog from "@/components/ChatLog.vue";
 import ChatAction from "@/components/ChatAction.vue";
 
 export default {
-  props: ["logs"],
+  props: ["logs", "receiver_id"],
   components: {
+    ChatHeader,
     ChatLog,
     ChatAction
   },

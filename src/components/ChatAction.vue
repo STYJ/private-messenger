@@ -1,6 +1,12 @@
 <template lang="html">
   <!-- using .prevent causes the submit event to no longer reload the page  -->
   <!-- Todo: Can't submit a message unless user is connected -->
+  <!-- Todo: upgrade using?
+    <v-card-actions>
+      <v-btn flat color="orange">Share</v-btn>
+      <v-btn flat color="orange">Explore</v-btn>
+    </v-card-actions>
+  -->
   <v-form v-on:submit.prevent="submit">
     <v-layout>
       <v-flex sm11>

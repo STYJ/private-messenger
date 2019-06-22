@@ -23,7 +23,11 @@
       <h1>Lists of connections</h1>
       {{ connections }}
     </v-flex>
-    <Chat v-bind:logs="logs" v-on:submit="submit" />
+    <Chat
+      v-bind:logs="logs"
+      v-bind:receiver_id="receiver_id"
+      v-on:submit="submit"
+    />
   </v-layout>
 </template>
 <style lang="css" scoped>
@@ -36,7 +40,7 @@ import Chat from "@/components/Chat.vue";
 export default {
   data() {
     return {
-      receiver_id: "",
+      receiver_id: "1234",
       active_connection: null,
       connections: [],
       logs: this.$store.getters["peerjs/logs"]
