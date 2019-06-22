@@ -7,7 +7,7 @@ import mutations from "./mutations";
 const state = () => ({
   // lastPeerId: null, // lastPeerId
   peer: null, // Peer = user
-  logs: ["hey", "yo"] // Logs for 1 chat
+  logs: ["Connect metamask to begin."] // Logs for 1 chat
 });
 
 export default {

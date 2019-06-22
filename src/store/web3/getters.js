@@ -9,5 +9,8 @@ export default {
   },
   web3: state => {
     return state.web3;
+  },
+  connected: state => {
+    return state.connected;
   }
 };

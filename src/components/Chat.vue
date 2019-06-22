@@ -1,5 +1,5 @@
 <template lang="html">
-  <v-flex id="chat">
+  <v-flex sm8 id="chat">
     <ChatLog v-bind:logs="logs" />
     <ChatAction v-on:submit="submit" />
   </v-flex>

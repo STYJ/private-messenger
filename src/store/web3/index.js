@@ -6,8 +6,9 @@ import mutations from "./mutations";
 
 const state = () => ({
   web3: null,
-  address: "Null",
-  network: "Not connected"
+  address: "Not connected",
+  network: "",
+  connected: false
 });
 
 export default {

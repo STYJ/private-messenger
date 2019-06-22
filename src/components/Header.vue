@@ -1,21 +1,25 @@
 <template lang="html">
-  <v-layout shrink id="header">
+  <v-layout wrap shrink id="header">
     <Logo />
     <v-spacer />
-    <ConnectMetamask />
+    <ConnectionStatus />
   </v-layout>
 </template>
 
 <script>
 import Logo from "@/components/Logo.vue";
-import ConnectMetamask from "@/components/ConnectMetamask.vue";
+import ConnectionStatus from "@/components/ConnectionStatus.vue";
 
 export default {
   components: {
     Logo,
-    ConnectMetamask
+    ConnectionStatus
   }
 };
 </script>
 
-<style lang="css" scoped></style>
+<style lang="css" scoped>
+#header {
+  margin: 1% 0
+}
+</style>

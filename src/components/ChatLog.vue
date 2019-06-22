@@ -1,17 +1,16 @@
 <template lang="html">
   <v-list color="none" ref="chat" id="logs">
     <template v-for="(log, index) in logs">
-      <v-list-tile color="success" v-if="log" v-bind:key="index">
+      <v-list-tile v-if="log" v-bind:key="index">
         {{ log }}
       </v-list-tile>
     </template>
   </v-list>
-
 </template>
 
 <script>
 export default {
-  props: ['logs'],
+  props: ["logs"],
   watch: {
     logs() {
       setTimeout(() => {
@@ -19,7 +18,7 @@ export default {
       }, 0);
     }
   }
-}
+};
 </script>
 
 <style lang="css" scoped>

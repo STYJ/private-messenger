@@ -1,6 +1,6 @@
 <template lang="html">
   <v-layout wrap id="body">
-    <v-flex xs6>
+    <v-flex sm6>
       <h3>Sender</h3>
       <v-btn small v-on:click="s_init">Initialise Sender</v-btn>
       <v-form v-on:submit.prevent="s_connect(receiver_id)">
@@ -10,7 +10,7 @@
               Connect
             </v-btn>
           </v-flex>
-          <v-flex shrink xs8>
+          <v-flex shrink sm8>
             <v-text-field
               placeholder="Enter receiver ID."
               v-model="receiver_id"
@@ -28,7 +28,7 @@
 
       <v-form v-on:submit.prevent="s_submit">
         <v-layout>
-          <v-flex xs11>
+          <v-flex sm11>
             <v-text-field
               placeholder="Type something here..."
               v-model="new_message"
@@ -43,13 +43,13 @@
       </v-form>
     </v-flex>
 
-    <v-flex xs6>
+    <v-flex sm6>
       <h3>Receiver</h3>
       <v-btn small v-on:click="r_init">Initialise Receiver</v-btn>
 
       <v-form v-on:submit.prevent="r_submit">
         <v-layout>
-          <v-flex xs11>
+          <v-flex sm11>
             <v-text-field
               placeholder="Type something here..."
               v-model="new_message"

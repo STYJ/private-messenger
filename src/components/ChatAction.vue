@@ -3,7 +3,7 @@
   <!-- Todo: Can't submit a message unless user is connected -->
   <v-form v-on:submit.prevent="submit">
     <v-layout>
-      <v-flex xs11>
+      <v-flex sm11>
         <v-text-field
           placeholder="Type something here..."
           v-model="new_message"

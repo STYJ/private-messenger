@@ -1,16 +1,17 @@
 <template lang="html">
   <v-layout wrap id="body">
     <v-flex sm3 id="connections">
-      <v-btn small v-on:click="init">Initialise Account</v-btn>
+      <v-btn small v-on:click="connectMetamask">Connect Metamask</v-btn>
       <v-form v-on:submit.prevent="connect(receiver_id)">
         <v-layout align-center justify-space-around>
           <v-flex shrink>
+            <!-- Todo: Add search functionality but this requires a server....? -->
             <!-- Todo: Connect automatically happens when you search for someone and try to message them. -->
             <v-btn fab flat small color="primary" type="submit">
               Connect
             </v-btn>
           </v-flex>
-          <v-flex shrink xs8>
+          <v-flex shrink sm8>
             <v-text-field
               placeholder="Enter receiver ID"
               v-model="receiver_id"
@@ -63,7 +64,12 @@ export default {
         }
       }
     },
-    init() {
+    // Todo: Add error handling if metamask not connected.
+    // Todo: Get ethereum address and somehow pass that into the peer as meta data.
+    // Todo: Create mapping between ethereum address and peer id.
+    // Todo: When change account, peer also changes. Must update the connectProvider function inside web3
+    connectMetamask() {
+      this.$store.dispatch("web3/connect");
       this.$store.dispatch("peerjs/init");
     },
     // Todo: Add error handling for empty receiver_id and self.
