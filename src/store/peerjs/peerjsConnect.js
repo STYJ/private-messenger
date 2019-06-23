@@ -23,7 +23,8 @@ export function init(context) {
     console.log(`Peer initiated: ${id}`);
   });
   peer.on("connection", function(conn) {
-    // Help Receiver to set up connection with Sender
+    // Help the receiver connect back to the sender
+    console.log("inside peer.on connection")
     setupConnection(context, conn);
   });
   peer.on("call", function(mediaConnection) {
@@ -48,6 +49,7 @@ export function init(context) {
   context.commit("setPeer", peer);
 }
 
+// Sender connecting to receiver
 export function connect(context, receiver_id) {
   let peer = context.getters.peer;
   // let conn = context.getters.conn;
@@ -61,7 +63,6 @@ export function connect(context, receiver_id) {
     // reliable: false
     // metadata: "Use this to identify the peer."
   });
-  // Sender needs to do this as well so that he can receive messages from receiver.
   setupConnection(context, conn);
 
   // Set peer in vuex to latest peer with newest connection
@@ -69,15 +70,17 @@ export function connect(context, receiver_id) {
 }
 
 function setupConnection(context, conn) {
-  // Get current peer logs, push new message into logs and update logs
+  // This is when receiver gets message from sender.
   conn.on("data", function(data) {
     let logs = context.getters.logs;
-    let receiver_id = conn.peer;
-    logs.push(`${receiver_id}: ${data}`);
+    logs[conn.peer].push(data);
     context.commit("setLogs", logs);
   });
-  // Todo: Create empty logs for this new connection
   conn.on("open", function() {
+    let logs = context.getters.logs;
+    // Todo: Check if logs exist, if so, don't delete old logs
+    logs[conn.peer] = [];
+    context.commit("setLogs", logs);
     console.log(`Connection established to peer: ${conn.peer}`);
   });
   // Firefox does not support this yet

@@ -39,8 +39,9 @@
 import Chat from "@/components/Chat.vue";
 export default {
   data() {
+    // Todo: Replace receiver_id with active_receiver_id
     return {
-      receiver_id: "1234",
+      receiver_id: "",
       active_connection: null,
       connections: [],
       logs: this.$store.getters["peerjs/logs"]
@@ -50,6 +51,12 @@ export default {
     Chat
   },
   methods: {
+    createMessage(id, message){
+      return {
+        id: id,
+        message: message,
+      }
+    },
     submit(new_message) {
       if (new_message.length > 0) {
         let peer = this.$store.getters["peerjs/peer"];
@@ -57,11 +64,13 @@ export default {
         console.log(this.$store);
         // Todo: Error validation check if connection exists. Maybe use activeConnection?
         if (peer !== null) {
-          peer.connections[this.receiver_id][0].send(`${new_message}`);
+          let messagePayload = this.createMessage(peer.id, new_message);
+          peer.connections[this.receiver_id][0].send(messagePayload);
           // You need to do this to update your own logs
           // The receiver's logs are being updated via "setupConnection".
+
           this.logs = this.$store.getters["peerjs/logs"];
-          this.logs.push(`${peer.id}: ${new_message}`);
+          this.logs[this.receiver_id].push(messagePayload);
           this.$store.dispatch("peerjs/setLogs", this.logs);
         } else {
           console.error("Error peer undefined! Please initiate a new peer.");
@@ -82,6 +91,8 @@ export default {
       // If you want to send more than 1 param to the action, use an object {}
       this.$store.dispatch("peerjs/connect", receiver_id);
       this.connections.push(receiver_id);
+      console.log(this.$store.getters["peerjs/peer"]);
+      console.log(this.$store);
       // this.receiver_id = ""; // If I do this, I need a way to get the active connection
     }
   }
