@@ -24,7 +24,7 @@
       {{ connections }}
     </v-flex>
     <Chat
-      v-bind:logs="logs"
+      v-bind:logs="logs[receiver_id]"
       v-bind:receiver_id="receiver_id"
       v-on:submit="submit"
     />
@@ -43,19 +43,24 @@ export default {
     return {
       receiver_id: "",
       active_connection: null,
-      connections: [],
-      logs: this.$store.getters["peerjs/logs"]
+      logs: ""
+      // logs: this.$store.getters["peerjs/logs"]
     };
   },
   components: {
     Chat
   },
+  computed: {
+    connections: function() {
+      return this.$store.getters["peerjs/connections"];
+    }
+  },
   methods: {
-    createMessage(id, message){
+    createMessage(id, message) {
       return {
         id: id,
-        message: message,
-      }
+        message: message
+      };
     },
     submit(new_message) {
       if (new_message.length > 0) {
@@ -69,9 +74,14 @@ export default {
           // You need to do this to update your own logs
           // The receiver's logs are being updated via "setupConnection".
 
+          let logs = this.$store.getters["peerjs/logs"];
+          console.log(logs);
+          logs[this.receiver_id].push(messagePayload);
+          this.$store.dispatch("peerjs/setLogs", logs);
+
+          // Need to pull logs again to auto refresh logs.
           this.logs = this.$store.getters["peerjs/logs"];
-          this.logs[this.receiver_id].push(messagePayload);
-          this.$store.dispatch("peerjs/setLogs", this.logs);
+          console.log(this.logs);
         } else {
           console.error("Error peer undefined! Please initiate a new peer.");
         }
@@ -90,7 +100,6 @@ export default {
     connect(receiver_id) {
       // If you want to send more than 1 param to the action, use an object {}
       this.$store.dispatch("peerjs/connect", receiver_id);
-      this.connections.push(receiver_id);
       console.log(this.$store.getters["peerjs/peer"]);
       console.log(this.$store);
       // this.receiver_id = ""; // If I do this, I need a way to get the active connection

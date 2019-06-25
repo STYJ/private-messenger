@@ -7,6 +7,7 @@ import mutations from "./mutations";
 const state = () => ({
   // lastPeerId: null, // lastPeerId
   peer: null, // Peer = user
+  connections: [],
   // Todo: Convert logs into an key (peerID) value (logs) pair
   logs: {}
 });

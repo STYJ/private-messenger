@@ -24,7 +24,7 @@ export function init(context) {
   });
   peer.on("connection", function(conn) {
     // Help the receiver connect back to the sender
-    console.log("inside peer.on connection")
+    console.log("inside peer.on connection");
     setupConnection(context, conn);
   });
   peer.on("call", function(mediaConnection) {
@@ -67,11 +67,15 @@ export function connect(context, receiver_id) {
 
   // Set peer in vuex to latest peer with newest connection
   context.commit("setPeer", peer);
+  context.commit("setConnections");
 }
 
 function setupConnection(context, conn) {
   // This is when receiver gets message from sender.
   conn.on("data", function(data) {
+    console.log("On data");
+    console.log(context);
+    console.log(data);
     let logs = context.getters.logs;
     logs[conn.peer].push(data);
     context.commit("setLogs", logs);

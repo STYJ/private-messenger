@@ -1,37 +1,27 @@
 <template lang="html">
-
-
-  <v-card>
-    <template v-for="(log, index) in logs">
-      <v-card-text>
-        <div>
-          {{ log.id }}: {{ log.message }}
-          <!-- <v-layout align-center>
-            <v-flex sm2 class="text-xs-center">
-              <v-img class="avatar text-xs-center"
-                :src="item.avatar"
-              ></v-img>
-            </v-flex>
-            <v-flex sm10>
-              {{ log.message }}
-            </v-flex>
-          </v-layout> -->
-        </div>
-      </v-card-text>
-      <hr>
-    </template>
-
-
+  <v-card v-for="(log, index) in logs" v-bind:key="index">
+    <v-card-text>
+      <div>
+        {{ log.id }}: {{ log.message }}
+        <!-- <v-layout align-center>
+          <v-flex sm2 class="text-xs-center">
+            <v-img class="avatar text-xs-center"
+              :src="item.avatar"
+            ></v-img>
+          </v-flex>
+          <v-flex sm10>
+            {{ log.message }}
+          </v-flex>
+        </v-layout> -->
+      </div>
+    </v-card-text>
+    <hr />
   </v-card>
-
-
-
-
 </template>
 
 <script>
 export default {
-  props: ["logs"],
+  props: ["logs"]
   // watch: {
   //   logs() {
   //     setTimeout(() => {
@@ -54,6 +44,4 @@ export default {
   width: 40px;
   border-radius: 100%;
 }
-
-
 </style>

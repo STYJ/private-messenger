@@ -8,7 +8,7 @@ export default {
     return state.peer;
   },
   connections: state => {
-    return state.peer.connections;
+    return state.connections;
   },
   logs: state => {
     return state.logs;
