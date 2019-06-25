@@ -1,12 +1,49 @@
 <template lang="html">
-  <v-layout wrap id="body">
+  <v-layout id="body">
+    <v-flex xs2>
+      <v-navigation-drawer permanent class="transparent">
+        <v-toolbar flat class="transparent">
+          <v-list>
+            <v-list-tile>
+              <v-list-tile-title class="title">
+                Chats
+              </v-list-tile-title>
+            </v-list-tile>
+          </v-list>
+        </v-toolbar>
+
+        <v-divider></v-divider>
+
+        <v-list dense>
+          <v-list-tile
+            v-for="item in items"
+            :key="item.title"
+            @click=""
+          >
+            <!-- <v-list-tile-action>
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-list-tile-action> -->
+
+            <v-list-tile-content>
+              <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list>
+      </v-navigation-drawer>
+    </v-flex>
+    <v-flex >
+      Chat appears here.
+    </v-flex>
+  </v-layout>
+
+  <!-- <v-layout wrap id="body">
     <v-flex sm3 id="connections">
       <v-btn small v-on:click="connectMetamask">Connect Metamask</v-btn>
-      <v-form v-on:submit.prevent="connect(receiver_id)">
+      <v-form v-on:submit.prevent="connect(active_id)">
         <v-layout align-center justify-space-around>
           <v-flex shrink>
-            <!-- Todo: Add search functionality but this requires a server....? -->
-            <!-- Todo: Connect automatically happens when you search for someone and try to message them. -->
+            Todo: Add search functionality but this requires a server....?
+            Todo: Connect automatically happens when you search for someone and try to message them.
             <v-btn fab flat small color="primary" type="submit">
               Connect
             </v-btn>
@@ -14,37 +51,43 @@
           <v-flex shrink sm8>
             <v-text-field
               placeholder="Enter receiver ID"
-              v-model="receiver_id"
+              v-model="active_id"
             />
           </v-flex>
         </v-layout>
       </v-form>
-      <!-- Todo: Change to a clickable list where you can change between logs -->
+      Todo: Change to a clickable list where you can change between logs
       <h1>Lists of connections</h1>
       {{ connections }}
     </v-flex>
     <Chat
-      v-bind:logs="logs[receiver_id]"
-      v-bind:receiver_id="receiver_id"
+      v-bind:logs="logs[active_id]"
+      v-bind:active_id="active_id"
       v-on:submit="submit"
     />
-  </v-layout>
+  </v-layout> -->
 </template>
 <style lang="css" scoped>
-#body {
-  background-color: lightblue
+.give-me-borders {
+  border-style: solid;
+  border-width: 5px;
+  border-color: grey !important;
 }
 </style>
 <script>
 import Chat from "@/components/Chat.vue";
 export default {
   data() {
-    // Todo: Replace receiver_id with active_receiver_id
     return {
-      receiver_id: "",
+      active_id: "",
       active_connection: null,
-      logs: ""
+      logs: "",
       // logs: this.$store.getters["peerjs/logs"]
+      items: [
+        { title: 'Home', icon: 'dashboard' },
+        { title: 'About', icon: 'question_answer' }
+      ],
+      right: null
     };
   },
   components: {
@@ -70,13 +113,13 @@ export default {
         // Todo: Error validation check if connection exists. Maybe use activeConnection?
         if (peer !== null) {
           let messagePayload = this.createMessage(peer.id, new_message);
-          peer.connections[this.receiver_id][0].send(messagePayload);
+          peer.connections[this.active_id][0].send(messagePayload);
           // You need to do this to update your own logs
           // The receiver's logs are being updated via "setupConnection".
 
           let logs = this.$store.getters["peerjs/logs"];
           console.log(logs);
-          logs[this.receiver_id].push(messagePayload);
+          logs[this.active_id].push(messagePayload);
           this.$store.dispatch("peerjs/setLogs", logs);
 
           // Need to pull logs again to auto refresh logs.
@@ -95,14 +138,14 @@ export default {
       this.$store.dispatch("web3/connect");
       this.$store.dispatch("peerjs/init");
     },
-    // Todo: Add error handling for empty receiver_id and self.
+    // Todo: Add error handling for empty active_id and self.
     // Todo: Get updated list of connections whenever someone connects
-    connect(receiver_id) {
+    connect(active_id) {
       // If you want to send more than 1 param to the action, use an object {}
-      this.$store.dispatch("peerjs/connect", receiver_id);
+      this.$store.dispatch("peerjs/connect", active_id);
       console.log(this.$store.getters["peerjs/peer"]);
       console.log(this.$store);
-      // this.receiver_id = ""; // If I do this, I need a way to get the active connection
+      // this.active_id = ""; // If I do this, I need a way to get the active connection
     }
   }
 };
