@@ -16,22 +16,23 @@
 
         <v-list dense>
           <v-list-tile
-            v-for="item in items"
-            :key="item.title"
-            @click=""
-          >
+            v-for="connection in connections"
+            v-bind:key="connection"
+            v-on:click="">
             <!-- <v-list-tile-action>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-tile-action> -->
 
             <v-list-tile-content>
-              <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+              <v-list-tile-title>{{ connection }}</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
       </v-navigation-drawer>
     </v-flex>
-    <v-flex >
+
+
+    <v-flex>
       Chat appears here.
     </v-flex>
   </v-layout>
@@ -84,8 +85,8 @@ export default {
       logs: "",
       // logs: this.$store.getters["peerjs/logs"]
       items: [
-        { title: 'Home', icon: 'dashboard' },
-        { title: 'About', icon: 'question_answer' }
+        { title: "Home", icon: "dashboard" },
+        { title: "About", icon: "question_answer" }
       ],
       right: null
     };
