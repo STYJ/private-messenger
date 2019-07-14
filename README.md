@@ -1,5 +1,7 @@
 # private-messenger
 
+A browser-based messaging app that allows you to chat with one another using just your Ethereum address!
+
 ## Project setup
 ```
 npm install

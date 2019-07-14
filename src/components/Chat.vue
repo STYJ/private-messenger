@@ -1,6 +1,6 @@
 <template lang="html">
-  <v-flex sm8 id="chat">
-    <ChatHeader v-bind:receiver_id="receiver_id" />
+  <v-flex id="chat">
+    <ChatHeader v-bind:active_connection="active_connection" />
     <ChatLog v-bind:logs="logs" />
     <ChatAction v-on:submit="submit" />
   </v-flex>
@@ -12,7 +12,7 @@ import ChatLog from "@/components/ChatLog.vue";
 import ChatAction from "@/components/ChatAction.vue";
 
 export default {
-  props: ["logs", "receiver_id"],
+  props: ["logs", "active_connection"],
   components: {
     ChatHeader,
     ChatLog,

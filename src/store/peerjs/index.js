@@ -10,6 +10,10 @@ const state = () => ({
   connections: ["peer_1", "peer_2"],
   // Todo: Convert logs into an key (peerID) value (logs) pair
   logs: {
+    null: [
+      { id: "Admin", message: "Hello and welcome to my chat!" },
+      { id: "Admin", message: "To get started..." }
+    ],
     peer_1: [
       { id: "peer_0", message: "hi" },
       { id: "peer_0", message: "My name is peer 0" },

@@ -1,5 +1,5 @@
 <template lang="html">
-  <v-flex md7 id="address" class="mx-1">
+  <v-flex id="address" class="mx-1">
     <v-card flat color="transparent">
       <v-card-text class="text-xs-center py-2 px-2">
         {{ address }}
