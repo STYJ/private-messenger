@@ -71,11 +71,6 @@ export default {
       new_connection: "",
       active_connection: null,
       logs: "",
-      // logs: this.$store.getters["peerjs/logs"]
-      items: [
-        { title: "Home", icon: "dashboard" },
-        { title: "About", icon: "question_answer" }
-      ]
     };
   },
   components: {
@@ -87,12 +82,13 @@ export default {
     },
   },
   methods: {
-    updateLogs() {
+    monitorLogs() {
       this.logs = this.$store.getters["peerjs/logs"][this.active_connection];
     },
+    // TBRH, I have no idea how monitorLogs are being called. I only called "setActiveConnection" once but it seems like my logs are always updated.
     setActiveConnection(connection) {
       this.active_connection = connection;
-      this.updateLogs();
+      this.monitorLogs();
     },
     createMessage(id, message) {
       return {
@@ -103,8 +99,6 @@ export default {
     submit(new_message) {
       if (new_message.length > 0) {
         let peer = this.$store.getters["peerjs/peer"];
-        console.log(peer);
-        console.log(this.$store);
         // Todo: Error validation check if connection exists. Maybe use activeConnection?
         if (peer !== null) {
           let messagePayload = this.createMessage(peer.id, new_message);
@@ -116,12 +110,7 @@ export default {
           let logs = this.$store.getters["peerjs/logs"];
           logs[this.active_connection].push(messagePayload);
           this.$store.dispatch("peerjs/setLogs", logs);
-          console.log("Updated Sender logs", this.$store.getters["peerjs/logs"]);
 
-
-          // Need to pull logs again to auto refresh logs.
-          // this.logs = this.$store.getters["peerjs/logs"];
-          // console.log(this.logs);
         } else {
           console.error("Error peer undefined! Please initiate a new peer.");
         }
@@ -129,9 +118,9 @@ export default {
     },
     // Todo: Add error handling for empty active_connection and self.
     // Todo: Get updated list of connections whenever someone connects
-    connect(active_connection) {
+    connect(new_connection) {
       // If you want to send more than 1 param to the action, use an object {}
-      this.$store.dispatch("peerjs/connect", this.new_connection);
+      this.$store.dispatch("peerjs/connect", new_connection);
       console.log("inside connect function");
       console.log("peer: ", this.$store.getters["peerjs/peer"]);
       console.log("store: ", this.$store);
