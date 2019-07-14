@@ -50,7 +50,7 @@
     </v-flex>
 
     <Chat
-      v-bind:logs="active_connection_logs"
+      v-bind:logs="logs"
       v-on:submit="submit"
       v-bind:active_connection="active_connection"
     />
@@ -85,13 +85,14 @@ export default {
     connections: function() {
       return this.$store.getters["peerjs/connections"];
     },
-    active_connection_logs: function() {
-      return this.$store.getters["peerjs/logs"][this.active_connection];
-    }
   },
   methods: {
+    updateLogs() {
+      this.logs = this.$store.getters["peerjs/logs"][this.active_connection];
+    },
     setActiveConnection(connection) {
       this.active_connection = connection;
+      this.updateLogs();
     },
     createMessage(id, message) {
       return {
@@ -113,9 +114,10 @@ export default {
           // The receiver's logs are being updated via "setupConnection".
 
           let logs = this.$store.getters["peerjs/logs"];
-          console.log("Sender logs", logs);
           logs[this.active_connection].push(messagePayload);
           this.$store.dispatch("peerjs/setLogs", logs);
+          console.log("Updated Sender logs", this.$store.getters["peerjs/logs"]);
+
 
           // Need to pull logs again to auto refresh logs.
           // this.logs = this.$store.getters["peerjs/logs"];
@@ -130,8 +132,9 @@ export default {
     connect(active_connection) {
       // If you want to send more than 1 param to the action, use an object {}
       this.$store.dispatch("peerjs/connect", this.new_connection);
-      console.log(this.$store.getters["peerjs/peer"]);
-      console.log(this.$store);
+      console.log("inside connect function");
+      console.log("peer: ", this.$store.getters["peerjs/peer"]);
+      console.log("store: ", this.$store);
       this.new_connection = "";
     }
   }

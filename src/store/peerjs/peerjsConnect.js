@@ -73,7 +73,7 @@ export function connect(context, receiver_id) {
 
   // Update peer in vuex to latest peer with newest connection
   context.commit("setPeer", peer);
-  context.commit("setConnections");
+  context.commit("setConnections"); // setConnection is for list of connections
 }
 
 function setupConnection(context, conn) {
