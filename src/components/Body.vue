@@ -88,7 +88,7 @@ export default {
     // TBRH, I have no idea how monitorLogs are being called. I only called "setActiveConnection" once but it seems like my logs are always updated.
     setActiveConnection(connection) {
       this.active_connection = connection;
-      this.monitorLogs();
+      // this.monitorLogs();
     },
     createMessage(id, message) {
       return {
@@ -97,6 +97,7 @@ export default {
       };
     },
     submit(new_message) {
+      // Todo: Should not be able to submit message until connection has been established
       if (new_message.length > 0) {
         let peer = this.$store.getters["peerjs/peer"];
         // Todo: Error validation check if connection exists. Maybe use activeConnection?
@@ -111,6 +112,9 @@ export default {
           logs[this.active_connection].push(messagePayload);
           this.$store.dispatch("peerjs/setLogs", logs);
 
+          this.logs = this.$store.getters["peerjs/logs"][this.active_connection];
+
+
         } else {
           console.error("Error peer undefined! Please initiate a new peer.");
         }
@@ -119,11 +123,11 @@ export default {
     // Todo: Add error handling for empty active_connection and self.
     // Todo: Get updated list of connections whenever someone connects
     connect(new_connection) {
+      console.log(`${this.$store.getters["peerjs/peer"].id} wants to connect to ${new_connection}`);
+
       // If you want to send more than 1 param to the action, use an object {}
       this.$store.dispatch("peerjs/connect", new_connection);
-      console.log("inside connect function");
-      console.log("peer: ", this.$store.getters["peerjs/peer"]);
-      console.log("store: ", this.$store);
+      // console.log(`${this.$store.getters["peerjs/peer"].id}'s store contains `, this.$store);
       this.new_connection = "";
     }
   }
