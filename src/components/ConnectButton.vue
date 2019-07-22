@@ -14,13 +14,20 @@ export default {
     }
   },
   methods: {
-    // Todo: Add error handling if metamask not connected.
     // Todo: Get ethereum address and somehow pass that into the peer as meta data.
     // Todo: Create mapping between ethereum address and peer id.
-    // Todo: When change account, peer also changes. Must update the connectProvider function inside web3
-    connectMetamask() {
-      this.$store.dispatch("web3/connect");
-      this.$store.dispatch("peerjs/init");
+    async connectMetamask() {
+      try {
+        await this.$store.dispatch("web3/connect");
+      } catch (err) {
+        console.error(err);
+      }
+
+      try {
+        await this.$store.dispatch("peerjs/init");
+      } catch (err) {
+        console.error("Unable to initialise new user.");
+      }
     }
   }
 };
