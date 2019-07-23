@@ -1,13 +1,13 @@
 <template lang="html">
   <v-toolbar flat color="blue" prominent>
     <v-toolbar-title>
-      {{ active_connection }}
+      {{ to }}
     </v-toolbar-title>
   </v-toolbar>
 </template>
 
 <script>
 export default {
-  props: ["active_connection"]
+  props: ["to"]
 };
 </script>

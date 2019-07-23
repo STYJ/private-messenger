@@ -2,17 +2,6 @@
   <v-layout id="body">
     <v-flex xs2>
       <v-navigation-drawer permanent class="transparent">
-        <!-- <v-toolbar flat class="transparent">
-          <v-list>
-            <v-list-tile>
-              <v-list-tile-title class="title">
-                Chats
-              </v-list-tile-title>
-            </v-list-tile>
-          </v-list>
-        </v-toolbar>
-
-        <v-divider></v-divider> -->
         <v-form v-on:submit.prevent="connect(new_connection)">
           <v-layout align-center justify-space-around>
             <v-flex shrink sm8>
@@ -49,11 +38,7 @@
       </v-navigation-drawer>
     </v-flex>
 
-    <Chat
-      v-bind:logs="logs"
-      v-on:submit="submit"
-      v-bind:active_connection="active_connection"
-    />
+    <Chat v-bind:logs="logs" v-on:submit="submit" v-bind:to="to" />
   </v-layout>
 </template>
 <style lang="css" scoped>
@@ -69,8 +54,7 @@ export default {
   data() {
     return {
       new_connection: "",
-      active_connection: null,
-      logs: ""
+      to: null
     };
   },
   components: {
@@ -79,6 +63,10 @@ export default {
   computed: {
     connections: function() {
       return this.$store.getters["peerjs/connections"];
+    },
+    logs: function() {
+      let logs = this.to ? this.$store.getters["peerjs/logs"][this.to] : [];
+      return logs;
     }
   },
   methods: {
@@ -88,10 +76,22 @@ export default {
         message: message
       };
     },
+    // monitorLogs() {
+    //   this.logs = this.$store.getters["peerjs/logs"][this.to];
+    // },
+    setActiveConnection(to) {
+      this.to = to;
+      // this.monitorLogs();
+    },
     submit(new_message) {},
-    // Todo: Add error handling for empty active_connection and self.
+    // Todo: Add error handling for empty to, self or if havent created peer
     // Todo: Get updated list of connections whenever someone connects
-    connect(new_connection) {}
+    async connect(to) {
+      // If you want to send more than 1 param to the action, use an object {}
+      await this.$store.dispatch("peerjs/connect", to);
+      // console.log(`${this.$store.getters["peerjs/peer"].id}'s store contains `, this.$store);
+      this.new_connection = "";
+    }
   }
 };
 </script>
