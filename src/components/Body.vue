@@ -1,4 +1,4 @@
-<template lang="html">
+message<template lang="html">
   <v-layout id="body">
     <v-flex xs2>
       <v-navigation-drawer permanent class="transparent">
@@ -54,7 +54,8 @@ export default {
   data() {
     return {
       new_connection: "",
-      to: null
+      to: null,
+      logs: []
     };
   },
   components: {
@@ -63,10 +64,6 @@ export default {
   computed: {
     connections: function() {
       return this.$store.getters["peerjs/connections"];
-    },
-    logs: function() {
-      let logs = this.to ? this.$store.getters["peerjs/logs"][this.to] : [];
-      return logs;
     }
   },
   methods: {
@@ -76,14 +73,42 @@ export default {
         message: message
       };
     },
-    // monitorLogs() {
-    //   this.logs = this.$store.getters["peerjs/logs"][this.to];
-    // },
+    updateLogs() {
+      // this.logs = this.$store.getters["peerjs/logs"][this.to];
+      this.logs = this.to ? this.$store.getters["peerjs/logs"][this.to] : [];
+    },
     setActiveConnection(to) {
       this.to = to;
-      // this.monitorLogs();
+      this.updateLogs();
     },
-    submit(new_message) {},
+    async submit(message) {
+      // Todo: Should not be able to submit message until connection has been established
+      if (message.length > 0) {
+        let peer = this.$store.getters["peerjs/peer"];
+        if (peer !== null) {
+          let messagePayload = this.createMessage(peer.id, message);
+          // To handle dropped connetions
+          if (
+            peer.connections[this.to].length > 0 &&
+            peer.connections[this.to][0].open
+          ) {
+            peer.connections[this.to][0].send(messagePayload);
+            // You need to do this to update your own logs
+            let logs = this.$store.getters["peerjs/logs"];
+            logs[this.to].push(messagePayload);
+            await this.$store.dispatch("peerjs/setLogs", logs);
+          } else {
+            console.error(`${this.to} is no longer active.`);
+          }
+
+          this.updateLogs();
+        } else {
+          console.error("Error peer undefined! Please initiate a new peer.");
+        }
+      } else {
+        console.error("Message length cannot be 0.");
+      }
+    },
     // Todo: Add error handling for empty to, self or if havent created peer
     // Todo: Get updated list of connections whenever someone connects
     async connect(to) {

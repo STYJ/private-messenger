@@ -1,6 +1,6 @@
 <template lang="html">
-  <div class="">
-    <v-card v-for="(log, index) in logs" v-bind:key="index">
+  <div ref="chat">
+    <v-card v-for="(log, index) in logs" v-bind:key="index" max-height="300">
       <v-card-text>
         <div>
           {{ log.id }}: {{ log.message }}
@@ -23,21 +23,22 @@
 
 <script>
 export default {
-  props: ["logs"]
-  // watch: {
-  //   logs() {
-  //     setTimeout(() => {
-  //       this.$refs.chat.$el.scrollTop = this.$refs.chat.$el.scrollHeight;
-  //     }, 0);
-  //   }
-  // }
+  props: ["logs"],
+  watch: {
+    logs() {
+      setTimeout(() => {
+        console.log(this.$refs);
+        this.$refs.chat.scrollTop = this.$refs.chat.scrollHeight;
+      }, 0);
+    }
+  }
 };
 </script>
 
 <style lang="css" scoped>
 
-#logs {
-  height:80%;
+#chatLog {
+  height: 80%;
   overflow: auto;
 }
 

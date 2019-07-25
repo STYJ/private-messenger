@@ -2,6 +2,7 @@
 
 import { createPeer, connectPeer } from "./peerjsConnect";
 
+// To make your life easier, all actions should be asynchronous since dispatch returns a promise
 export async function init(ctx) {
   createPeer(ctx);
 }

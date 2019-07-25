@@ -20,7 +20,7 @@ function setupPeer(ctx, peer) {
     console.log(
       `Peer ${peer.id} received an incoming connection from ${conn.peer}`
     );
-    setupFrom(ctx, peer, conn);
+    setupConn(ctx, peer, conn);
   });
   peer.on("call", function(mediaConnection) {
     console.log(`I haven't figured out how to handle calls ${mediaConnection}`);
@@ -47,19 +47,47 @@ export function connectPeer(ctx, to) {
   } catch (err) {
     console.error(err);
   }
-  setupTo(ctx, from, conn);
-
-  ctx.commit("setPeer", from);
-  ctx.commit("setConnections");
+  setupConn(ctx, from, conn);
 }
 
-function setupTo(ctx, peer, to_conn) {
-  console.log(`to ${to_conn.peer}`);
+function setupConn(ctx, peer, conn) {
+  console.log(`You: ${peer.id}, them: ${conn.peer}`);
+
+  conn.on("open", function() {
+    let logs = ctx.getters.logs;
+    logs[conn.peer] = [];
+    ctx.commit("setLogs", logs);
+
+    // This is when your peer gets message from some other peer gets message from sender.
+    conn.on("data", function(data) {
+      let logs = ctx.getters.logs;
+      logs[conn.peer].push(data);
+      ctx.commit("setLogs", logs);
+    });
+
+    // Firefox does not support this yet
+    // Use the connection.close() function to close it
+    // Todo: Clear logs when connection is closed.
+    conn.on("close", function() {
+      console.log(`Connection with ${conn.peer} has been closed.`);
+    });
+
+    conn.on("error", function(err) {
+      console.log(err);
+    });
+
+    ctx.commit("setPeer", peer);
+    ctx.commit("setConnections");
+
+    // Note that sometimes it takes a while to open connection.
+    // Todo: Add proper error handling such that you cannot do anything until connection has been established.
+    console.log(`End of setup, new connection established to ${conn.peer}`);
+  });
 }
 
-function setupFrom(ctx, peer, from_conn) {
-  console.log(`from ${from_conn.peer}`);
-}
+// function setupFrom(ctx, peer, from_conn) {
+//   console.log(`from ${from_conn.peer}`);
+// }
 
 export default {
   createPeer,
