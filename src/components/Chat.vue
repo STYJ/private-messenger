@@ -1,8 +1,10 @@
 <template lang="html">
   <v-flex id="chat">
-    <ChatHeader v-bind:to="to" />
-    <ChatLog v-bind:logs="logs" />
-    <ChatAction v-on:submit="submit" />
+    <v-card class="elevation-12" color="primary lighten-4">
+      <ChatHeader v-bind:to="to" />
+      <ChatLog v-bind:logs="logs" />
+      <ChatAction v-on:submit="submit" />
+    </v-card>
   </v-flex>
 </template>
 

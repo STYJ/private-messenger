@@ -1,5 +1,5 @@
 <template>
-  <v-flex sm6 md4 lg3 align-self-center>
+  <v-flex xs8 sm6 md4 lg3 align-self-center>
     <v-layout wrap justify-end id="connection-status">
       <ConnectButton />
       <Network />

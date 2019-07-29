@@ -7,21 +7,24 @@
       <v-btn flat color="orange">Explore</v-btn>
     </v-card-actions>
   -->
-  <v-form v-on:submit.prevent="submit">
-    <v-layout>
-      <v-flex sm11>
-        <v-text-field
-          placeholder="Type something here..."
-          v-model="new_message"
-        />
-      </v-flex>
-      <v-flex align-self-center>
-        <v-btn fab flat small color="primary" type="submit">
-          <v-icon>send</v-icon>
-        </v-btn>
-      </v-flex>
-    </v-layout>
-  </v-form>
+
+  <v-card-actions>
+    <v-form v-on:submit.prevent="submit">
+      <v-layout>
+        <v-flex sm11>
+          <v-text-field
+            placeholder="Type something here..."
+            v-model="new_message"
+          />
+        </v-flex>
+        <v-flex align-self-center>
+          <v-btn fab flat small color="primary" type="submit">
+            <v-icon>send</v-icon>
+          </v-btn>
+        </v-flex>
+      </v-layout>
+    </v-form>
+  </v-card-actions>
 </template>
 
 <script>
