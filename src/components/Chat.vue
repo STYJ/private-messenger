@@ -1,10 +1,12 @@
 <template lang="html">
-  <v-flex md6 id="chat">
-    <v-card class="elevation-12" color="primary lighten-4">
+  <v-flex id="chat">
+    <!-- <v-card color="transparent"> -->
       <ChatHeader v-bind:to="to" />
+      <v-divider></v-divider>
+      
       <ChatLog v-bind:logs="logs" />
       <ChatAction v-on:submit="submit" />
-    </v-card>
+    <!-- </v-card> -->
   </v-flex>
 </template>
 
@@ -30,6 +32,5 @@ export default {
 
 <style lang="css" scoped>
 #chat {
-  margin: 3%;
 }
 </style>

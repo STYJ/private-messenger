@@ -1,6 +1,6 @@
 <template lang="html">
   <v-card-title>
-    <v-toolbar flat color="blue" prominent>
+    <v-toolbar flat color="transparent" prominent>
       <v-toolbar-title>
         {{ to }}
       </v-toolbar-title>

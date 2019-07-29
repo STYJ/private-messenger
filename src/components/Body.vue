@@ -2,6 +2,17 @@ message<template lang="html">
   <v-layout id="body">
     <v-flex shrink>
       <v-navigation-drawer permanent class="transparent">
+        <v-toolbar flat class="transparent">
+          <v-list>
+            <v-list-tile>
+              <v-list-tile-title class="title">
+                Chats
+              </v-list-tile-title>
+            </v-list-tile>
+          </v-list>
+        </v-toolbar>
+
+        <v-divider></v-divider>
         <v-form v-on:submit.prevent="connect(new_connection)">
           <v-layout align-center justify-space-around wrap>
             <v-flex shrink>
@@ -10,7 +21,7 @@ message<template lang="html">
                 v-model="new_connection"
               />
             </v-flex>
-            <v-flex xs3 class="text-xs-center">
+            <v-flex md3 class="text-xs-center">
               <!-- Todo: Add search functionality but this requires a server....?
               Todo: Connect automatically happens when you search for someone and try to message them. -->
               <v-btn fab flat small color="primary" type="submit">
@@ -54,7 +65,7 @@ export default {
   data() {
     return {
       new_connection: "",
-      to: "",
+      to: "Read these before clicking on anything",
       logs: []
     };
   },

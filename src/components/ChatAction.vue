@@ -8,23 +8,24 @@
     </v-card-actions>
   -->
 
-  <v-card-actions>
+  <!-- v-card-actions restricts the width of the input area. -->
+  <!-- <v-card-actions> -->
     <v-form v-on:submit.prevent="submit">
       <v-layout>
-        <v-flex sm11>
+        <v-flex>
           <v-text-field
             placeholder="Type something here..."
             v-model="new_message"
           />
         </v-flex>
-        <v-flex align-self-center>
+        <v-flex align-self-center shrink>
           <v-btn fab flat small color="primary" type="submit">
             <v-icon>send</v-icon>
           </v-btn>
         </v-flex>
       </v-layout>
     </v-form>
-  </v-card-actions>
+  <!-- </v-card-actions> -->
 </template>
 
 <script>

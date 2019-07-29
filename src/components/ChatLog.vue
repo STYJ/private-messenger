@@ -1,29 +1,11 @@
 <template lang="html">
   <v-card-text>
-    <v-list color="success" ref="chat" id="logs">
+    <v-list ref="chat" id="logs">
       <template v-for="(log, index) in logs">
         <p v-bind:key="index" class="log">{{ log.id }}: {{ log.message }}</p>
       </template>
     </v-list>
   </v-card-text>
-  <!-- <v-card v-for="(log, index) in logs" v-bind:key="index" max-height="300">
-      <v-card-text>
-        <div>
-          {{ log.id }}: {{ log.message }}
-          <v-layout align-center>
-            <v-flex sm2 class="text-xs-center">
-              <v-img class="avatar text-xs-center"
-                :src="item.avatar"
-              ></v-img>
-            </v-flex>
-            <v-flex sm10>
-              {{ log.message }}
-            </v-flex>
-          </v-layout>
-        </div>
-      </v-card-text>
-      <hr />
-    </v-card> -->
 </template>
 
 <script>
