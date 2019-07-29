@@ -1,5 +1,5 @@
 <template lang="html">
-  <v-flex id="chat">
+  <v-flex md6 id="chat">
     <v-card class="elevation-12" color="primary lighten-4">
       <ChatHeader v-bind:to="to" />
       <ChatLog v-bind:logs="logs" />

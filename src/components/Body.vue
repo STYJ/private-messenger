@@ -1,16 +1,16 @@
 message<template lang="html">
   <v-layout id="body">
-    <v-flex xs2>
+    <v-flex shrink>
       <v-navigation-drawer permanent class="transparent">
         <v-form v-on:submit.prevent="connect(new_connection)">
-          <v-layout align-center justify-space-around>
-            <v-flex shrink sm8>
+          <v-layout align-center justify-space-around wrap>
+            <v-flex shrink>
               <v-text-field
                 placeholder="Enter receiver ID"
                 v-model="new_connection"
               />
             </v-flex>
-            <v-flex shrink>
+            <v-flex xs3 class="text-xs-center">
               <!-- Todo: Add search functionality but this requires a server....?
               Todo: Connect automatically happens when you search for someone and try to message them. -->
               <v-btn fab flat small color="primary" type="submit">
@@ -54,7 +54,7 @@ export default {
   data() {
     return {
       new_connection: "",
-      to: null,
+      to: "",
       logs: []
     };
   },

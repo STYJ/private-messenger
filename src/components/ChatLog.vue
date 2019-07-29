@@ -1,15 +1,12 @@
 <template lang="html">
-  <div ref="chat">
-    <v-card-text>
-      <v-list ref="chat" id="logs">
-        <template v-for="(log, index) in logs">
-          <v-subheader v-bind:key="index">
-            {{ log.id }}: {{ log.message }}
-          </v-subheader>
-        </template>
-      </v-list>
-    </v-card-text>
-    <!-- <v-card v-for="(log, index) in logs" v-bind:key="index" max-height="300">
+  <v-card-text>
+    <v-list color="success" ref="chat" id="logs">
+      <template v-for="(log, index) in logs">
+        <p v-bind:key="index" class="log">{{ log.id }}: {{ log.message }}</p>
+      </template>
+    </v-list>
+  </v-card-text>
+  <!-- <v-card v-for="(log, index) in logs" v-bind:key="index" max-height="300">
       <v-card-text>
         <div>
           {{ log.id }}: {{ log.message }}
@@ -27,7 +24,6 @@
       </v-card-text>
       <hr />
     </v-card> -->
-  </div>
 </template>
 
 <script>
@@ -36,7 +32,6 @@ export default {
   watch: {
     logs() {
       setTimeout(() => {
-        console.log(this.$refs.chat);
         this.$refs.chat.$el.scrollTop = this.$refs.chat.$el.scrollHeight;
       }, 0);
     }
@@ -46,9 +41,16 @@ export default {
 
 <style lang="css" scoped>
 
+.log {
+  max-width: 100%;
+  max-height: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
 #logs {
-  height: 100px;
-  overflow: auto;
+  height: 400px;
+  overflow-y: auto;
 }
 
 .avatar {
