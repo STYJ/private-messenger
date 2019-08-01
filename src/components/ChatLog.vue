@@ -33,6 +33,7 @@ export default {
 #logs {
   height: 400px;
   overflow-y: auto;
+  background-color: transparent;
 }
 
 .avatar {

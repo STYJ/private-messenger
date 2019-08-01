@@ -2,7 +2,7 @@ message<template lang="html">
   <v-layout id="body">
     <v-flex shrink>
       <v-navigation-drawer permanent class="transparent">
-        <v-toolbar flat class="transparent">
+        <!-- <v-toolbar flat class="transparent">
           <v-list>
             <v-list-tile>
               <v-list-tile-title class="title">
@@ -12,7 +12,7 @@ message<template lang="html">
           </v-list>
         </v-toolbar>
 
-        <v-divider></v-divider>
+        <v-divider></v-divider> -->
         <v-form v-on:submit.prevent="connect(new_connection)">
           <v-layout align-center justify-space-around wrap>
             <v-flex shrink>
@@ -65,8 +65,39 @@ export default {
   data() {
     return {
       new_connection: "",
-      to: "Read these before clicking on anything",
-      logs: []
+      to: "Privacy focused messenging app",
+      logs: [
+        { id: "Admin", message: "Hi!" },
+        {
+          id: "Admin",
+          message: "Please read the following instructions before proceeding."
+        },
+        {
+          id: "Admin",
+          message:
+            "This dapp currently only works with metamask so ensure that you have metamask installed."
+        },
+        { id: "Admin", message: "Click on the 'Connect Metamask' button." },
+        {
+          id: "Admin",
+          message:
+            "If not enabled, a prompt will be triggered to request for permission to allow the dapp to connect."
+        },
+        {
+          id: "Admin",
+          message:
+            "After enabling it, enter an Ethereum address (this address must also be currently connected to the dapp) into the input field and click connect."
+        },
+        {
+          id: "Admin",
+          message: "Voila! You're done. You may begin your conversation."
+        },
+        {
+          id: "Admin",
+          message:
+            "Before you go, remember that if you were to accidentally or purposely refresh your tab, you will lose all your connections and chat history."
+        }
+      ]
     };
   },
   components: {

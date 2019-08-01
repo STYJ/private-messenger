@@ -1,11 +1,10 @@
 <template lang="html">
   <v-flex id="chat">
     <!-- <v-card color="transparent"> -->
-      <ChatHeader v-bind:to="to" />
-      <v-divider></v-divider>
-      
-      <ChatLog v-bind:logs="logs" />
-      <ChatAction v-on:submit="submit" />
+    <ChatHeader v-bind:to="to" />
+    <v-divider></v-divider>
+    <ChatLog v-bind:logs="logs" />
+    <ChatAction v-on:submit="submit" />
     <!-- </v-card> -->
   </v-flex>
 </template>

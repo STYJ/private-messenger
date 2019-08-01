@@ -29,7 +29,6 @@
 
 <style lang="css" scoped>
 #footer {
-  background-color: lightgreen
 }
 </style>
 

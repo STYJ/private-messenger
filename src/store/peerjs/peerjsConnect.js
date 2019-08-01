@@ -2,8 +2,8 @@
 import Peer from "peerjs";
 
 export function createPeer(ctx) {
-  // let address = ctx.rootState.web3.address;
-  let address = null;
+  let address = ctx.rootState.web3.address;
+  // let address = null;
   let peer = new Peer(address, {
     debug: 2
   });
