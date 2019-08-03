@@ -34,20 +34,20 @@ function setupPeer(ctx, peer) {
     peer.reconnect();
   });
   peer.on("error", function(err) {
-    console.log(err);
+    console.error(err);
   });
 }
 
 export function connectPeer(ctx, to) {
   let from = ctx.getters.peer;
   console.log(`${from.id} wants to connect to ${to}`);
-  let conn;
-  try {
-    conn = from.connect(to);
-  } catch (err) {
-    console.error(err);
+
+  if (to == from.id) {
+    console.error("Can't connect to self.");
+  } else {
+    let conn = from.connect(to);
+    setupConn(ctx, from, conn);
   }
-  setupConn(ctx, from, conn);
 }
 
 function setupConn(ctx, peer, conn) {

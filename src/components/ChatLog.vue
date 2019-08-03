@@ -2,7 +2,7 @@
   <v-card-text>
     <v-list ref="chat" id="logs">
       <template v-for="(log, index) in logs">
-        <p v-bind:key="index" class="log">{{ log.id }}: {{ log.message }}</p>
+        <p v-bind:key="index" class="log">{{ log.id }} : {{ log.message }}</p>
       </template>
     </v-list>
   </v-card-text>
@@ -31,7 +31,7 @@ export default {
 }
 
 #logs {
-  height: 400px;
+  height: 340px;
   overflow-y: auto;
   background-color: transparent;
 }

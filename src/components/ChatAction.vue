@@ -13,10 +13,7 @@
   <v-form v-on:submit.prevent="submit" class="mx-3">
     <v-layout>
       <v-flex>
-        <v-text-field
-          placeholder="Type something here..."
-          v-model="new_message"
-        />
+        <v-text-field placeholder="Type message here" v-model="new_message" />
       </v-flex>
       <v-flex align-self-center shrink>
         <v-btn fab flat small color="primary" type="submit">

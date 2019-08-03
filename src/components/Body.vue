@@ -17,7 +17,7 @@ message<template lang="html">
           <v-layout align-center justify-space-around wrap>
             <v-flex shrink>
               <v-text-field
-                placeholder="Enter receiver ID"
+                placeholder="Type address here"
                 v-model="new_connection"
               />
             </v-flex>
@@ -75,27 +75,31 @@ export default {
         {
           id: "Admin",
           message:
-            "This dapp currently only works with metamask so ensure that you have metamask installed."
-        },
-        { id: "Admin", message: "Click on the 'Connect Metamask' button." },
-        {
-          id: "Admin",
-          message:
-            "If not enabled, a prompt will be triggered to request for permission to allow the dapp to connect."
+            "This dapp currently a WIP and only works with metamask. Ensure that you have metamask installed."
         },
         {
           id: "Admin",
           message:
-            "After enabling it, enter an Ethereum address (this address must also be currently connected to the dapp) into the input field and click connect."
+            "If you were accidentally or intentionally refresh your tab, you will lose all your chat history."
         },
         {
           id: "Admin",
-          message: "Voila! You're done. You may begin your conversation."
+          message: "To get started, click on the 'Connect Metamask' button."
         },
         {
           id: "Admin",
           message:
-            "Before you go, remember that if you were to accidentally or purposely refresh your tab, you will lose all your connections and chat history."
+            "If the dapp is not enabled, a prompt will be triggered to request for permission to connect."
+        },
+        {
+          id: "Admin",
+          message:
+            "After enabling it, enter an Ethereum address into the input field and click connect. Note that this address must also be currently connected to the dapp."
+        },
+        {
+          id: "Admin",
+          message:
+            "Voilà! You're done. Click on the address and start communicating!."
         }
       ]
     };
@@ -111,7 +115,7 @@ export default {
   methods: {
     createMessage(id, message) {
       return {
-        id: id,
+        id: id.slice(0, 6) + "...",
         message: message
       };
     },
@@ -156,7 +160,6 @@ export default {
     async connect(to) {
       // If you want to send more than 1 param to the action, use an object {}
       await this.$store.dispatch("peerjs/connect", to);
-      // console.log(`${this.$store.getters["peerjs/peer"].id}'s store contains `, this.$store);
       this.new_connection = "";
     }
   }
